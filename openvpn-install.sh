@@ -1025,7 +1025,7 @@ WantedBy=multi-user.target" >/etc/systemd/system/iptables-openvpn.service
 		echo "proto tcp-client" >>/etc/openvpn/client-template.txt
 	fi
 	if [[ $ROUTEALL == false ]]; then
-		echo "pull-filter ignore \"route-gateway \"" >>/etc/openvpn/client-template.txt
+		echo "pull-filter ignore route-gateway" >>/etc/openvpn/client-template.txt
 	fi
 	echo "remote $IP $PORT
 dev tun
