@@ -272,7 +272,12 @@ function installQuestions() {
 	done
 	case $PORT_CHOICE in
 	1)
-		PORT="1194"
+		if [[ $PORTOPENVPN != "" ]];
+		then
+			PORT=$PORTOPENVPN
+		else
+			PORT="1194"
+		fi
 		;;
 	2)
 		until [[ $PORT =~ ^[0-9]+$ ]] && [ "$PORT" -ge 1 ] && [ "$PORT" -le 65535 ]; do
@@ -1018,6 +1023,9 @@ WantedBy=multi-user.target" >/etc/systemd/system/iptables-openvpn.service
 		echo "explicit-exit-notify" >>/etc/openvpn/client-template.txt
 	elif [[ $PROTOCOL == 'tcp' ]]; then
 		echo "proto tcp-client" >>/etc/openvpn/client-template.txt
+	fi
+	if [[ $ROUTEALL == false ]]; then
+		echo "pull-filter ignore \"route-gateway \"" >>/etc/openvpn/client-template.txt
 	fi
 	echo "remote $IP $PORT
 dev tun
